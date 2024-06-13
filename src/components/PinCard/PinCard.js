@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Card = styled.div`
+  break-inside: avoid;
   border-radius: 10px;
   margin: 10px;
   padding: 10px;
@@ -31,10 +32,9 @@ const Description = styled.p`
 `;
 
 const PinCard = ({ pin }) => {
-console.log(pin)
   return (
     <Card>
-      <Image src={pin.image_url} alt={pin.title} />
+      <Image src={pin.thumbnail_url} alt={pin.title} />
       <Title>{pin.title}</Title>
       <Description>{pin.description}</Description>
     </Card>

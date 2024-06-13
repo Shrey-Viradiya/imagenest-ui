@@ -3,14 +3,19 @@ import PinCard from '../components/PinCard/PinCard';
 import styled from 'styled-components';
 
 const PinContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-gap: 10px;
-  justify-items: center;
-  justify-content: center;
-  margin: 0 auto;
+  column-count: 6;
+  column-gap: 10px;
+  margin: 50px auto 0; // Adjust 50px to the height of your navigation bar
   width: 80%;
 `;
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
 
 const HomePage = () => {
   const [pins, setPins] = useState([]);
@@ -18,7 +23,7 @@ const HomePage = () => {
   useEffect(() => {
     fetch('http://127.0.0.1:8000/pins/board/1')
       .then(response => response.json())
-      .then(data => setPins(data))
+      .then(data => setPins(shuffleArray(data)))
       .catch(error => console.error('Error:', error));
   }, []);
 
