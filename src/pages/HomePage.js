@@ -3,10 +3,29 @@ import PinCard from '../components/PinCard/PinCard';
 import styled from 'styled-components';
 
 const PinContainer = styled.div`
-  column-count: 6;
   column-gap: 10px;
-  margin: 50px auto 0; // Adjust 50px to the height of your navigation bar
+  margin: 50px auto 0;
   width: 80%;
+
+  @media (max-width: 750px) {
+    column-count: 2;
+  }
+
+  @media (min-width: 750px) and (max-width: 1000px) {
+    column-count: 3;
+  }
+
+  @media (min-width: 1000px) and (max-width: 1400px) {
+    column-count: 4;
+  }
+
+  @media (min-width: 1400px) and (max-width: 1550px) {
+    column-count: 5;
+  }
+
+  @media (min-width: 1550px) {
+    column-count: 6;
+  }
 `;
 
 function shuffleArray(array) {
