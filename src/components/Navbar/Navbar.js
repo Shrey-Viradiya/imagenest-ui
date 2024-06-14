@@ -1,34 +1,62 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import logo from '../../LOGO_SMALL.png';
 
-const Nav = styled.nav`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${props => props.theme.beige};
-  padding: 10px 20px;
-  font-family: Rubik, sans-serif;
+const NavBar = styled.nav`
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 1rem;
+background-color: ${props => props.theme.darkRed};
+color: #fff;
 `;
 
-const NavLink = styled(Link)`
-  color: ${props => props.theme.lightRed};
-  margin-right: 15px;
+const NavBarContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 80%;
+  width: 100%;
+  margin: auto;
+`;
+
+const Logo = styled.div`
+img {
+  height: 50px;
+}
+`;
+
+const NavLinks = styled.div`
+display: flex;
+gap: 2rem;
+
+a {
+  color: ${props => props.theme.beige};
   text-decoration: none;
-  font-family: Rubik, sans-serif;
+  transition: color 0.3s;
 
   &:hover {
-    color: ${props => props.theme.darkRed};
+    color: ${props => props.theme.beige};
   }
+}
 `;
 
-const Navbar = () => {
-  return (
-    <Nav>
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="/create">Create Pin</NavLink>
-    </Nav>
-  );
-};
+const Navigation = () => (
+  <NavBar>
+  <NavBarContent>
+    <Logo>
+      <Link to="/">
+        <img src={logo} alt="ImageNest" />
+      </Link>
+    </Logo>
 
-export default Navbar;
+    <NavLinks>
+      <Link to="/home"><b>Home</b></Link>
+      <Link to="/create-pin"><b>Create Pin</b></Link>
+    </NavLinks>
+    </NavBarContent>
+  </NavBar>
+);
+
+export default Navigation;
