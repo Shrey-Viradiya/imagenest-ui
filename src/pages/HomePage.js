@@ -68,8 +68,8 @@ function shuffleArray(array) {
     return (
       <PinContainer>
         {pins.map(pin => (
-          <Link to={`/pin/${pin.id}`} key={pin.id}>
-            <PinCard pin={pin} />
+          <Link to={`/pin/${pin.id}`} key={pin.id} style={{ textDecoration: 'none' }}>
+          <PinCard pin={pin} />
           </Link>
         ))}
       </PinContainer>
