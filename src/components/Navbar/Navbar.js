@@ -52,8 +52,8 @@ const Navigation = () => (
     </Logo>
 
     <NavLinks>
-      <Link to="/home"><b>Home</b></Link>
-      <Link to="/create-pin"><b>Create Pin</b></Link>
+      <Link to="/"><b>Home</b></Link>
+      <Link to="/create"><b>Create Pin</b></Link>
     </NavLinks>
     </NavBarContent>
   </NavBar>

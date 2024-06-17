@@ -10,7 +10,7 @@ const Card = styled.div`
   transition: box-shadow 0.3s ease-in-out;
 
   &:hover {
-    box-shadow: 0px 0px 10px ${props => props.theme.darkRed};
+    box-shadow: 0px 0px 10px ${props => props.theme.purpleBlue};
   }
 `;
 
@@ -32,11 +32,15 @@ const Description = styled.p`
 `;
 
 const PinCard = ({ pin }) => {
+  const shortDescription = pin.description.length > 25
+    ? `${pin.description.slice(0, 25)}...`
+    : pin.description;
+
   return (
     <Card>
       <Image src={pin.thumbnail_url} alt={pin.title} />
       <Title>{pin.title}</Title>
-      <Description>{pin.description}</Description>
+      <Description>{shortDescription}</Description>
     </Card>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PinCard from '../components/PinCard/PinCard';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const PinContainer = styled.div`
   column-gap: 10px;
@@ -52,7 +53,7 @@ function shuffleArray(array) {
         setPins(shuffleArray(JSON.parse(cachedPins)));
       } else {
         // If there's no data in localStorage or it's old, fetch it
-        fetch('http://127.0.0.1:8000/pins/')
+        fetch('http://127.0.0.1:8000/pins?number=100')
           .then(response => response.json())
           .then(data => {
             // Store the fetched data and the current timestamp in localStorage
@@ -66,7 +67,11 @@ function shuffleArray(array) {
   
     return (
       <PinContainer>
-        {pins.map(pin => <PinCard key={pin.id} pin={pin} />)}
+        {pins.map(pin => (
+          <Link to={`/pin/${pin.id}`} key={pin.id}>
+            <PinCard pin={pin} />
+          </Link>
+        ))}
       </PinContainer>
     );
   };
