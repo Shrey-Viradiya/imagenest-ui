@@ -53,7 +53,7 @@ function shuffleArray(array) {
         setPins(shuffleArray(JSON.parse(cachedPins)));
       } else {
         // If there's no data in localStorage or it's old, fetch it
-        fetch('http://127.0.0.1:8000/pins?number=100')
+        fetch('http://127.0.0.1:8000/pins?number=200')
           .then(response => response.json())
           .then(data => {
             // Store the fetched data and the current timestamp in localStorage
