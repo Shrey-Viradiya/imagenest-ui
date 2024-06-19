@@ -29,52 +29,59 @@ const PinContainer = styled.div`
   }
 `;
 
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
+const HomePage = () => {
+  const [pins, setPins] = useState([]);
+  const [columns, setColumns] = useState([[], [], [], [], [], [], [], []]); // Adjust the number of columns based on your layout
 
-  const HomePage = () => {
-    const [pins, setPins] = useState([]);
-  
-    useEffect(() => {
-      // Try to get data from localStorage
-      const cachedPins = localStorage.getItem('pins');
-      const timestamp = localStorage.getItem('timestamp');
-  
-      const oneMinute = 60 * 1000; // 60,000 milliseconds
-      const isDataOld = Date.now() - timestamp > oneMinute;
-  
-      if (cachedPins && !isDataOld) {
-        // If there's data in localStorage and it's not old, use it
-        setPins(shuffleArray(JSON.parse(cachedPins)));
-      } else {
-        // If there's no data in localStorage or it's old, fetch it
-        fetch('http://127.0.0.1:8000/pins?number=200')
-          .then(response => response.json())
-          .then(data => {
-            // Store the fetched data and the current timestamp in localStorage
-            localStorage.setItem('pins', JSON.stringify(data));
-            localStorage.setItem('timestamp', Date.now());
-            setPins(shuffleArray(data));
-          })
-          .catch(error => console.error('Error:', error));
-      }
-    }, []);
-  
-    return (
-      <PinContainer>
-        {pins.map(pin => (
-          <Link to={`/pin/${pin.id}`} key={pin.id} style={{ textDecoration: 'none' }}>
-          <PinCard pin={pin} />
-          </Link>
-        ))}
-      </PinContainer>
-    );
+  const fetchPins = async () => {
+    const response = await fetch(`http://localhost:8000/pins?number=30`);
+    const data = await response.json();
+    const newPins = data.filter(newPin => !pins.some(pin => pin.id === newPin.id));
+    setPins(oldPins => [...oldPins, ...newPins]);
   };
+
+  useEffect(() => {
+    fetchPins();
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+      fetchPins();
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const newColumns = [...columns];
+    pins.forEach(pin => {
+      // Check if pin already exists in any column
+      const pinExists = newColumns.some(column => column.some(existingPin => existingPin.id === pin.id));
+      if (!pinExists) {
+        const shortestColumn = newColumns.reduce((shortest, current, i) => current.length < shortest.length ? current : shortest, newColumns[0]);
+        shortestColumn.push(pin);
+      }
+    });
+    setColumns(newColumns);
+  }, [pins]);
+
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '100vw'}}>
+      {columns.map((column, i) => (
+        <div key={i}>
+          {column.map(pin => (
+            <Link to={`/pin/${pin.id}`} key={pin.id} style={{ textDecoration: 'none' }}>
+              <PinCard pin={pin} />
+            </Link>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
   
-  export default HomePage;
+  
+export default HomePage;
   
