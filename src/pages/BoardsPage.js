@@ -91,7 +91,7 @@ const BoardsPage = () => {
                         <CardTitle>{board.name}</CardTitle>
                         <ImageContainer>
                             {board.pins.map((pin, index) => (
-                                <Image key={index} src={pin.image_url} alt={pin.description} />
+                                <Image key={index} src={pin.thumbnail_url} alt={pin.description} />
                             ))}
                         </ImageContainer>
                     </Card>

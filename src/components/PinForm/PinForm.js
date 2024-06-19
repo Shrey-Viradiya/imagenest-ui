@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LoadingGif from './LoadingGif';
 import styled from 'styled-components';
 
@@ -12,6 +12,9 @@ const CheckboxInput = styled.input`
 `;
 
 const PinForm = () => {
+
+  const [boards, setBoards] = useState([]);
+  const [selectedBoard, setSelectedBoard] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [file, setFile] = useState(null);
@@ -19,6 +22,16 @@ const PinForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/boards/user/1/')
+      .then(response => response.json())
+      .then(data => setBoards(data));
+  }, []);
+
+  const handleBoardChange = (event) => {
+    setSelectedBoard(event.target.value);
+  };
   
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,7 +40,7 @@ const PinForm = () => {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
-    formData.append('board_id', 1);
+    formData.append('board_id', selectedBoard);
     formData.append('owner_id', 1);
     formData.append('is_private', isPrivate);
     formData.append('file', file);
@@ -78,6 +91,17 @@ const PinForm = () => {
           value={description} 
           onChange={(e) => setDescription(e.target.value)}
         />
+        <label className="pin-label" htmlFor="board">Board</label>
+        <select 
+          className="pin-input" 
+          id="board" 
+          value={selectedBoard} 
+          onChange={handleBoardChange}
+        >
+          {boards.map(board => (
+            <option key={board.id} value={board.id}>{board.name}</option>
+          ))}
+        </select>
         <label className="pin-label" htmlFor="file">Image</label>
         <input 
           className="pin-input" 

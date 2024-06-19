@@ -1,33 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PinCard from '../components/PinCard/PinCard';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
-const PinContainer = styled.div`
-  column-gap: 10px;
-  margin: 50px auto 0;
-  width: 80%;
-
-  @media (max-width: 750px) {
-    column-count: 2;
-  }
-
-  @media (min-width: 750px) and (max-width: 1000px) {
-    column-count: 3;
-  }
-
-  @media (min-width: 1000px) and (max-width: 1400px) {
-    column-count: 4;
-  }
-
-  @media (min-width: 1400px) and (max-width: 1550px) {
-    column-count: 5;
-  }
-
-  @media (min-width: 1550px) {
-    column-count: 6;
-  }
-`;
 
 const HomePage = () => {
   const [pins, setPins] = useState([]);
@@ -65,7 +38,7 @@ const HomePage = () => {
       }
     });
     setColumns(newColumns);
-  }, [pins]);
+  }, [pins, columns, pinIds]);
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '100vw'}}>
