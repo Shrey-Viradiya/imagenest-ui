@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoadingGif from './LoadingGif';
 import styled from 'styled-components';
 
@@ -22,6 +23,8 @@ const PinForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://localhost:8000/boards/user/1/')
@@ -51,7 +54,7 @@ const PinForm = () => {
     });
 
     const data = await response.json();
-    console.log(data);
+    navigate(`/pin/${data.id}`);
     setIsLoading(false);
     setIsSubmitted(true);
   };
