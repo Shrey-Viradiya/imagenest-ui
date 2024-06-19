@@ -32,6 +32,7 @@ const PinContainer = styled.div`
 const HomePage = () => {
   const [pins, setPins] = useState([]);
   const [columns, setColumns] = useState([[], [], [], [], [], [], [], []]); // Adjust the number of columns based on your layout
+  const [pinIds, setPinIds] = useState(new Set());
 
   const fetchPins = async () => {
     const response = await fetch(`http://localhost:8000/pins?number=30`);
@@ -57,11 +58,10 @@ const HomePage = () => {
   useEffect(() => {
     const newColumns = [...columns];
     pins.forEach(pin => {
-      // Check if pin already exists in any column
-      const pinExists = newColumns.some(column => column.some(existingPin => existingPin.id === pin.id));
-      if (!pinExists) {
+      if (!pinIds.has(pin.id)) {
         const shortestColumn = newColumns.reduce((shortest, current, i) => current.length < shortest.length ? current : shortest, newColumns[0]);
         shortestColumn.push(pin);
+        setPinIds(oldPinIds => new Set([...oldPinIds, pin.id]));
       }
     });
     setColumns(newColumns);
